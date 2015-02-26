@@ -5,8 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
+
+import platformer.graphics.Screen;
 
 public class MainGame extends Canvas implements Runnable{
 	
@@ -16,14 +20,18 @@ public class MainGame extends Canvas implements Runnable{
 	
 	private Thread thread;
 	private JFrame frame;
-	
 	private boolean running = false;
+	private Screen screen;
+	
+	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 	
 	public MainGame(){
 		Dimension size = new Dimension(width, height);
 		setPreferredSize(size);
 		frame = new JFrame();
 		thread = new Thread();
+		screen = new Screen(width, height);
 	}
 	
 	public synchronized void start(){
@@ -59,7 +67,6 @@ public class MainGame extends Canvas implements Runnable{
 				update();
 				delta--;
 			}
-			System.out.println("running...");
 			render();
 		}
 		stop();
@@ -76,9 +83,15 @@ public class MainGame extends Canvas implements Runnable{
 			return;
 		}
 		
+		screen.render();
+		for(int i = 0; i > pixels.length; i++){
+			pixels[i] = screen.pixels[i];
+		}
+		
 		Graphics g = bs.getDrawGraphics();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, width, height);
+		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		
 		g.dispose();
 		bs.show();

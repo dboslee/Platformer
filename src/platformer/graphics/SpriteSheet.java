@@ -1,4 +1,4 @@
-package platformer;
+package platformer.graphics;
 
 import java.awt.image.BufferedImage;
 
