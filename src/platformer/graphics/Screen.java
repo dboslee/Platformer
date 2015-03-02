@@ -38,6 +38,7 @@ public class Screen {
 				//if(xx < 0 || xx >= width) break;
 				int tileIndex = ((xx / 32) & MAP_SIZE_MASK) + ((yy / 32) & MAP_SIZE_MASK) * MAP_SIZE;
 				pixels[x + y * width] = tiles[tileIndex];
+				
 			}
 		}
 	}

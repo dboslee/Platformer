@@ -1,5 +1,7 @@
 package platformer;
 
+import input.keyboard;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,6 +24,7 @@ public class MainGame extends Canvas implements Runnable{
 	private JFrame frame;
 	private boolean running = false;
 	private Screen screen;
+	private keyboard key;
 	
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
@@ -32,6 +35,7 @@ public class MainGame extends Canvas implements Runnable{
 		frame = new JFrame();
 		thread = new Thread();
 		screen = new Screen(width, height);
+		key = new keyboard();
 	}
 	
 	public synchronized void start(){
