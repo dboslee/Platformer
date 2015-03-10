@@ -1,7 +1,5 @@
 package platformer;
 
-import platformer.input.Keyboard;
-
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,6 +11,7 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 import platformer.graphics.Screen;
+import platformer.input.Keyboard;
 
 public class MainGame extends Canvas implements Runnable{
 	
@@ -36,6 +35,7 @@ public class MainGame extends Canvas implements Runnable{
 		thread = new Thread();
 		screen = new Screen(width, height);
 		key = new Keyboard();
+		addKeyListener(key);
 	}
 	
 	public synchronized void start(){
@@ -76,8 +76,22 @@ public class MainGame extends Canvas implements Runnable{
 		stop();
 	}
 	
+	int x, y;
+	
 	public void update(){
-		
+		key.update();
+		if(key.jump){
+			y++;
+		}
+		if(key.duck){
+			y--;
+		}
+		if(key.left){
+			x++;
+		}
+		if(key.right){
+			x--;
+		}
 	}
 	
 	public void render(){
@@ -88,7 +102,7 @@ public class MainGame extends Canvas implements Runnable{
 		}
 		
 		screen.clear();
-		screen.render();
+		screen.render(x, y);
 		for(int i = 0; i < pixels.length; i++){
 			pixels[i] = screen.pixels[i];
 		}
